@@ -27,9 +27,20 @@ public class PersonalDataViewModel extends AndroidViewModel {
         PersonalDataModel = personalDataRepository.getAllPersonalData();
     }
 
-    public void insert(PersonalDataModel personalDataModel) {
-        personalDataRepository.insert(personalDataModel);
+    public void insert(PersonalDataModel personalDataModel,int id) {
+        personalDataRepository.insert(personalDataModel,id);
     }
+
+    public void update(PersonalDataModel personalDataModel,int id) {
+        personalDataRepository.update(personalDataModel,id);
+    }
+
+    public void delete(PersonalDataModel personalDataModel) {
+        personalDataRepository.delete(personalDataModel);
+    }
+
+
+
 
 
     public LiveData<List<PersonalDataModel>> getAllPersonalData() {

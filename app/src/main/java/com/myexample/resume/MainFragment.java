@@ -34,7 +34,7 @@ import java.util.List;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment implements ResumesAdapter.OnItemClickListener {
+public class MainFragment extends Fragment implements ResumesAdapter.OnItemClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -115,8 +115,6 @@ public class MainFragment extends Fragment implements ResumesAdapter.OnItemClick
         });
 
 
-
-
         return rootView;
 
     }
@@ -155,6 +153,14 @@ public class MainFragment extends Fragment implements ResumesAdapter.OnItemClick
        // Navigation.findNavController(view).navigate((NavDirections) action);
 
         Navigation.findNavController(view).navigate(R.id.viewFragment, bundle);
+
+    }
+
+    @Override
+    public void onItemDeleteClick(PersonalDataModel personalDataModels) {
+
+                personalDataViewModel.delete(personalDataModels);
+
 
     }
 

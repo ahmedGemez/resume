@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -13,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myexample.resume.Model.PersonalDataModel;
 import com.myexample.resume.ViewModels.PersonalDataViewModel;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -72,6 +77,8 @@ public class EditDataFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        //Log.d("dkmncd",getArguments().getInt("id")+"ddd");
+
         personalDataViewModel = ViewModelProviders.of(this).get(PersonalDataViewModel.class);
     }
 
@@ -85,18 +92,46 @@ public class EditDataFragment extends Fragment {
         final EditText Eemail=view.findViewById(R.id.Eemail_id);
         final EditText Ecareer=view.findViewById(R.id.Ecareer);
 
+
         Button SaveButton=view.findViewById(R.id.save);
 
+        int id=0;
+        if ( getArguments().getInt("id")!= 0) {
+             id=  getArguments().getInt("id");
+            personalDataViewModel = ViewModelProviders.of(this).get(PersonalDataViewModel.class);
+
+            personalDataViewModel.getPersonalData(id).observe(this, new Observer<PersonalDataModel>() {
+                @Override
+                public void onChanged(@Nullable PersonalDataModel personalDataModels) {
+
+                    Ename.setText(personalDataModels.getName());
+                    Eemail.setText(personalDataModels.getEmail());
+                    Ecareer.setText(personalDataModels.getCareerSummary());
+                    Ephone.setText(personalDataModels.getPhone());
+                    Eaddress.setText(personalDataModels.getAddress());
+
+                }
+            });
+
+        }
+
+
+        final int finalId = id;
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final PersonalDataModel personalDataModel= new PersonalDataModel( Ename.getText().toString(),Eemail.getText().toString(),Eaddress.getText().toString(),Ephone.getText().toString(),Ecareer.getText().toString());
+                 PersonalDataModel personalDataModel= new PersonalDataModel( Ename.getText().toString(),Eemail.getText().toString(),Eaddress.getText().toString(),Ephone.getText().toString(),Ecareer.getText().toString());
 
-                Log.d("chchfcfh",Ename.getText().toString()+"ccvvf");
-                Log.d("ahmed",personalDataModel.name+"ccvvf");
+                if(finalId==0){
+                    personalDataViewModel.insert(personalDataModel, finalId);
+                }else{
+                    personalDataModel.setId(finalId);
+                    personalDataViewModel.update(personalDataModel, finalId);
 
-                personalDataViewModel.insert(personalDataModel);
+
+                    Log.d("updated",personalDataModel.getId()+"  "+finalId);
+                }
             }
         });
 

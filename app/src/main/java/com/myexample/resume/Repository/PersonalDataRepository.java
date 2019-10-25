@@ -34,25 +34,59 @@ public class PersonalDataRepository {
         return PersonalDataModel;
     }
 
-    public void insert(PersonalDataModel PersonalData) {
-        new insertAsyncTask(modelDao).execute(PersonalData);
+    public void insert(PersonalDataModel PersonalData,int id) {
+        new insertAsyncTask(modelDao,id).execute(PersonalData);
+    }
+
+
+    public void update(PersonalDataModel PersonalData,int id){
+        new insertAsyncTask(modelDao,id).execute(PersonalData);
+
+    }
+
+    public void delete(PersonalDataModel PersonalData){
+        new DeleteAsyncTask(modelDao).execute(PersonalData);
+
     }
 
 
     private static class insertAsyncTask extends AsyncTask<PersonalDataModel, Void, Void> {
 
         private ModelDao mAsyncTaskDao;
+        private int id;
 
-        insertAsyncTask(ModelDao dao) {
+        insertAsyncTask(ModelDao dao,int id) {
             mAsyncTaskDao = dao;
+            this.id=id;
         }
 
         @Override
         protected Void doInBackground(final PersonalDataModel... params) {
-            mAsyncTaskDao.insert(params[0]);
-            Log.d("dlkncdn","inserted");
+            if(id==0){
+                mAsyncTaskDao.insert(params[0]);
+            }else{
+                mAsyncTaskDao.update(params[0]);
+            }
             return null;
         }
+    }
+
+
+    private class DeleteAsyncTask extends  AsyncTask<PersonalDataModel, Void, Void> {
+
+        private ModelDao mAsyncTaskDao;
+
+        DeleteAsyncTask(ModelDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(PersonalDataModel... params) {
+            Log.d("kjkjkj",params[0].getId()+"cscsc");
+            mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+
     }
 
 

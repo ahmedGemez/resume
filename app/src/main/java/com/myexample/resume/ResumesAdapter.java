@@ -1,10 +1,12 @@
 package com.myexample.resume;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myexample.resume.Model.PersonalDataModel;
@@ -12,6 +14,7 @@ import com.myexample.resume.Model.PersonalDataModel;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ResumesAdapter extends RecyclerView.Adapter<ResumesAdapter.ResumeViewHolder> {
@@ -51,6 +54,8 @@ public class ResumesAdapter extends RecyclerView.Adapter<ResumesAdapter.ResumeVi
                 }
             });
 
+            holder.setListeners(personalDataModel.getId());
+
 
 
         } else {
@@ -79,11 +84,15 @@ public class ResumesAdapter extends RecyclerView.Adapter<ResumesAdapter.ResumeVi
         TextView id;
         private int mPosition;
         View itemView;
+        ImageView edit;
+        ImageView delete;
         public ResumeViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView=itemView;
             name=itemView.findViewById(R.id.txname);
             id=itemView.findViewById(R.id.txid);
+            edit=itemView.findViewById(R.id.ivRowEdit);
+            delete=itemView.findViewById(R.id.ivRowDelete);
         }
 
         public void setData(String name,String id, int position) {
@@ -91,8 +100,31 @@ public class ResumesAdapter extends RecyclerView.Adapter<ResumesAdapter.ResumeVi
             this.id.setText(id);
             mPosition = position;
         }
+
+        public void setListeners(final int id){
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("id",id);
+                    Navigation.findNavController(view).navigate(R.id.editDataFragment, bundle);
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    onItemClickListener.onItemDeleteClick(personalDataModels.get(mPosition));
+
+                }
+            });
+        }
     }
+
     public interface OnItemClickListener {
         void onItemClick(int id,View view);
+        void onItemDeleteClick(PersonalDataModel personalDataModel);
     }
+
 }

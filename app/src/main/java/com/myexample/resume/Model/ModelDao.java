@@ -25,5 +25,5 @@ public interface ModelDao {
     void update(PersonalDataModel personalDataModel);
 
     @Delete
-    int delete(PersonalDataModel noPersonalDataModel);
+    int delete(PersonalDataModel PersonalDataModel);
 }
