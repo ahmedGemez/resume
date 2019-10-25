@@ -19,7 +19,7 @@ public interface ModelDao {
     LiveData<List<PersonalDataModel>> getAllPersonalData();
 
     @Query("SELECT * FROM PersonalDataModel WHERE id=:id")
-    LiveData<PersonalDataModel> getNote(String id);
+    LiveData<PersonalDataModel> getPersonalData(int id);
 
     @Update
     void update(PersonalDataModel personalDataModel);

@@ -4,12 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.myexample.resume.Model.PersonalDataModel;
+import com.myexample.resume.ViewModels.PersonalDataViewModel;
+
+import java.util.List;
 
 
 /**
@@ -31,6 +40,8 @@ public class ViewFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private PersonalDataViewModel personalDataViewModel;
+
 
     public ViewFragment() {
         // Required empty public constructor
@@ -70,6 +81,29 @@ public class ViewFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_view, container, false);
         int id=  getArguments().getInt("id");
         Log.d("lvnvmnf",id+"");
+
+        final TextView Ename_id=view.findViewById(R.id.Ename_id);
+        final TextView Eemail_id=view.findViewById(R.id.Eemail_id);
+        final TextView Eaddress_id=view.findViewById(R.id.Eaddress_id);
+        final TextView Ephone_id=view.findViewById(R.id.Ephone_id);
+        final TextView Ecareer=view.findViewById(R.id.Ecareer);
+
+        personalDataViewModel = ViewModelProviders.of(this).get(PersonalDataViewModel.class);
+
+        personalDataViewModel.getPersonalData(id).observe(this, new Observer<PersonalDataModel>() {
+            @Override
+            public void onChanged(@Nullable PersonalDataModel personalDataModels) {
+
+                Ename_id.setText(personalDataModels.getName());
+                Eemail_id.setText(personalDataModels.getEmail());
+                Ecareer.setText(personalDataModels.getCareerSummary());
+                Ephone_id.setText(personalDataModels.getPhone());
+                Eaddress_id.setText(personalDataModels.getAddress());
+            }
+        });
+
+
+
         return view;
 
     }

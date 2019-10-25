@@ -35,4 +35,8 @@ public class PersonalDataViewModel extends AndroidViewModel {
     public LiveData<List<PersonalDataModel>> getAllPersonalData() {
         return PersonalDataModel;
     }
+
+    public LiveData<PersonalDataModel> getPersonalData(int PersonalId) {
+        return personalDataRepository.getPersonalDataModel(PersonalId);
+    }
 }

@@ -25,6 +25,11 @@ public class PersonalDataRepository {
 
     }
 
+
+    public LiveData<PersonalDataModel> getPersonalDataModel(int Id) {
+        return modelDao.getPersonalData(Id);
+    }
+
    public LiveData<List<PersonalDataModel>> getAllPersonalData() {
         return PersonalDataModel;
     }
